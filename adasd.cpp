@@ -1,6 +1,9 @@
 ﻿#include <iostream>
 #include <string>
 #include <Windows.h>
+
+
+
 using namespace std;
 const char* names[5]
 {
@@ -322,45 +325,74 @@ void menuKosh()
     } while (answer != 4);
 }
 
+bool transformToLowerCase(const char* text, const char* pattern)
+{
+    char a[50], b[50];
+    strcpy_s(a, text);
+    strcpy_s(b, pattern);
+
+    for (int i = 0; a[i]; i++) a[i] = tolower(a[i]);
+    for (int i = 0; b[i]; i++) b[i] = tolower(b[i]);
+
+    return strstr(a, b) != nullptr;
+}
+
 void searchByName()
 {
     int answer;
     showProducts();
+
     while (true)
     {
-        cout << "Введіть назву для пошуку: ";
+        cout << "Введіть назву для пошуку: " << endl;
         cin >> query;
         cout << "Результати пошуку:" << endl;
+        int foundIndexes[10];
+        int foundCount = 0;
         flagsearch = false;
         for (int i = 0; i < 5; i++)
         {
-            if (strstr(names[i], query))
+            if (transformToLowerCase(names[i], query))
             {
-                cout << names[i] << " — " << prices[i] << " грн" << endl;
+                cout << foundCount + 1 << ") " << names[i] << " — " << prices[i] << " грн\n";
+
+                foundIndexes[foundCount] = i;
+                foundCount++;
                 flagsearch = true;
-                indforsearch = i;
-                cout << "1 - Помістити в кошик" << endl;
-                cin >> answer;
-                if (answer == 1)
-                {
-                    strcpy_s(mass[indbase].tovar, query);
-                    mass[indbase].price = prices[indforsearch];
-                    indbase++;
-                }
             }
         }
-        if (flagsearch == false)
+
+        if (!flagsearch)
         {
             cout << "Такого товару не має" << endl;
         }
-        cout << "2 - Меню кошика || 0 - Перейти до пошуку" << endl;
+        else
+        {
+            cout << "Оберіть номер товару для додавання (0 — пропустити): " << endl;
+            cin >> answer;
+
+            if (answer > 0 && answer <= foundCount)
+            {
+                int idx = foundIndexes[answer - 1];
+
+                strcpy_s(mass[indbase].tovar, names[idx]); 
+                mass[indbase].price = prices[idx];
+                indbase++;
+
+                cout << "Товар додано!" << endl;
+            }
+        }
+
+        cout << "2 - Меню кошика || 0 - Новий пошук: " << endl;
         cin >> answer;
+
         if (answer == 2)
         {
             menuKosh();
         }
     }
 }
+
 int main()
 {
     SetConsoleOutputCP(1251);
