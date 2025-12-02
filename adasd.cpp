@@ -76,16 +76,30 @@ void check(char fullname[50], char phone[50], char email[50],
 bool validateEmail(const char* email)
 {
     const char* at = strchr(email, '@');
-    if (!at) 
+    if (!at)
         return false;
-    const char* dot = strchr(at, '.');
-    return dot != nullptr;
+
+    if (at == email)
+        return false;
+
+    const char* dot = strchr(at + 1, '.');
+    if (!dot)
+        return false;
+
+    if (dot == at + 1)
+        return false;
+
+    if (strlen(dot + 1) < 2)
+        return false;
+
+    return true;
 }
+
 
 bool isDigits(const char* s)
 {
     for (int i = 0; s[i]; i++)
-        if (!isdigit(s[i])) 
+        if (!isdigit(s[i]))
             return false;
     return true;
 }
@@ -98,23 +112,30 @@ bool validateName(const char* name)
 
     for (int i = 0; name[i]; i++)
     {
-        if (name[i] != ' ' && !inWord)
-        {
-            inWord = true;
-            words++;
-        }
-        else if (name[i] == ' ')
+        unsigned char ch = (unsigned char)name[i];
+
+        if (ch == ' ')
         {
             inWord = false;
         }
+        else
+        {
+            if (!isalpha(ch))
+                return false;
+
+            if (!inWord)
+            {
+                inWord = true;
+                words++;
+            }
+        }
     }
-
     return words == 3;
-
 }
 
+
 // Безпечний ввід числа
-bool safeInt(int &x)
+bool safeInt(int& x)
 {
     cin >> x;
     if (cin.fail())
@@ -178,17 +199,17 @@ void order()
     {
         cout << "Email: ";
         cin.getline(email, 50);
-        if (validateEmail(email)) 
+        if (validateEmail(email))
             break;
         cout << "Email некоректний! Має містити @ і .\n";
     }
 
-	bool flag = true;
+    bool flag = true;
     // доставка
     while (flag)
     {
         cout << "Спосіб доставки (1 - кур'єр || 2 - поштомат || 3 - відділення): ";
-		cin >> answer;
+        cin >> answer;
         if (answer == 1)
         {
             strcpy_s(delivery, "кур'єр");
@@ -203,12 +224,12 @@ void order()
         {
             strcpy_s(delivery, "відділення");
             break;
-		}
-        else 
+        }
+        else
         {
             cout << "ПОМИЛКА! Виберіть 1, 2 або 3.\n";
-			flag = false;
-		}
+            flag = false;
+        }
 
     }
 
