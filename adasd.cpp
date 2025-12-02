@@ -43,12 +43,19 @@ void del()
     int index = 0;
     cout << "Введіть індекс товару" << endl;
     cin >> index;
-    for (index; index < indbase; index++)
-    {
+	if (index>indbase)
+	{
+		cout << "Товару з таким індексом немає" << endl;
+	}
+	else
+	{
+		for (index; index < indbase; index++)
+    	{
         strcpy_s(mass[index].tovar, mass[index + 1].tovar);
         mass[index].price = prices[index + 1];
-    }
-    indbase--;
+    	}
+		indbase--;
+	}
     printKosh();
 }
 void sum()
@@ -380,6 +387,15 @@ void searchByName()
                 foundIndexes[foundCount] = i;
                 foundCount++;
                 flagsearch = true;
+                indforsearch = i;
+                cout << "1 - Помістити в кошик" << endl;
+                cin >> answer;
+                if (answer == 1)
+                {
+                    strcpy_s(mass[indbase].tovar, query);
+                    mass[indbase].price = prices[indforsearch];
+                    indbase++;
+                }
             }
         }
 
