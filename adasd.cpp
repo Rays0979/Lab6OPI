@@ -1,9 +1,6 @@
-﻿#include <iostream>
+#include <iostream>
 #include <string>
 #include <Windows.h>
-
-
-
 using namespace std;
 const char* names[5]
 {
@@ -40,7 +37,7 @@ void printKosh()
 }
 void del()
 {
-    int index = 0;
+   int index = 0;
     cout << "Введіть індекс товару" << endl;
     cin >> index;
 	if (index>indbase)
@@ -387,15 +384,6 @@ void searchByName()
                 foundIndexes[foundCount] = i;
                 foundCount++;
                 flagsearch = true;
-                indforsearch = i;
-                cout << "1 - Помістити в кошик" << endl;
-                cin >> answer;
-                if (answer == 1)
-                {
-                    strcpy_s(mass[indbase].tovar, query);
-                    mass[indbase].price = prices[indforsearch];
-                    indbase++;
-                }
             }
         }
 
@@ -412,10 +400,10 @@ void searchByName()
             {
                 int idx = foundIndexes[answer - 1];
 
-                strcpy_s(mass[indbase].tovar, names[idx]); 
-                mass[indbase].price = prices[idx];
-                indbase++;
-
+					strcpy_s(mass[indbase].tovar, names[i]);
+					mass[indbase].price = prices[indforsearch];
+                    indbase++;
+               
                 cout << "Товар додано!" << endl;
             }
         }
@@ -429,7 +417,6 @@ void searchByName()
         }
     }
 }
-
 int main()
 {
     SetConsoleOutputCP(1251);
