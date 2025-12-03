@@ -37,22 +37,22 @@ void printKosh()
 }
 void del()
 {
-   int index = 0;
+    int index = 0;
     cout << "Введіть індекс товару" << endl;
     cin >> index;
-	if (index>indbase)
-	{
-		cout << "Товару з таким індексом немає" << endl;
-	}
-	else
-	{
-		for (index; index < indbase; index++)
-    	{
-        strcpy_s(mass[index].tovar, mass[index + 1].tovar);
-        mass[index].price = prices[index + 1];
-    	}
-		indbase--;
-	}
+    if (index > indbase)
+    {
+        cout << "Товару з таким індексом немає" << endl;
+    }
+    else
+    {
+        for (index; index < indbase; index++)
+        {
+            strcpy_s(mass[index].tovar, mass[index + 1].tovar);
+            mass[index].price = prices[index + 1];
+        }
+        indbase--;
+    }
     printKosh();
 }
 void sum()
@@ -350,6 +350,7 @@ void menuKosh()
     } while (answer != 4);
 }
 
+
 bool transformToLowerCase(const char* text, const char* pattern)
 {
     char a[50], b[50];
@@ -400,10 +401,10 @@ void searchByName()
             {
                 int idx = foundIndexes[answer - 1];
 
-					strcpy_s(mass[indbase].tovar, names[i]);
-					mass[indbase].price = prices[indforsearch];
-                    indbase++;
-               
+                strcpy_s(mass[indbase].tovar, names[idx]);
+                mass[indbase].price = prices[idx];
+                indbase++;
+
                 cout << "Товар додано!" << endl;
             }
         }
@@ -417,6 +418,7 @@ void searchByName()
         }
     }
 }
+
 int main()
 {
     SetConsoleOutputCP(1251);
